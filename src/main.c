@@ -18,7 +18,6 @@ const char args_doc[] = "FILE1 FILE2";
 const char doc[] = "Swap FILE1 and FILE2 atomically. Files one and two can also be directories (either or both).";
 static struct argp_option argp_options[] =
     {
-     {"silent", 's', 0, 0, "Don't output anything.", 0},
      {"verbose", 'v', 0, 0, "Produce verbose output.", 0},
      {0}
     };
@@ -26,7 +25,6 @@ static struct argp_option argp_options[] =
 struct config {
     char *file1;
     char *file2;
-    bool silent;
     bool verbose;
 };
 
@@ -47,17 +45,8 @@ error_t parse_opt(int key, char *arg, struct argp_state *state) {
             argp_error(state, "Provide exactly two file arguments.\n");
         }
         return 0;
-    case 's':
-        config->silent = true;
-        if (config->verbose) {
-            argp_error(state, "Cannot have both 'silent' and 'verbose'.");
-        }
-        return 0;
     case 'v':
         config->verbose = true;
-        if (config->silent) {
-            argp_error(state, "Cannot have both 'silent' and 'verbose'.");
-        }
         return 0;
     case ARGP_KEY_INIT:
     case ARGP_KEY_SUCCESS:
@@ -99,9 +88,6 @@ int main(int argc, char **argv) {
     if (config.verbose) {
         printf("Absolute path file 1: %s.\n", file1_realpath);
         printf("Absolute path file 2: %s.\n", file2_realpath);
-    }
-
-    if (!config.silent) {
         printf("Swapping %s and %s.\n", config.file1, config.file2);
     }
     int result = renameat2(0, file1_realpath,
