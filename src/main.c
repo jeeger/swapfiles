@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+#include "config.h"
 
 #include <stdio.h>
 #include <limits.h>
@@ -12,8 +12,6 @@
 #include <sys/syscall.h>
 #include <sys/types.h>
 #include <linux/fs.h>
-
-#include "config.h"
 
 const char *argp_program_version = PACKAGE_STRING;
 const char args_doc[] = "FILE1 FILE2";
@@ -82,7 +80,7 @@ int renameat2(int olddirfd, const char *oldpath,
 
 int main(int argc, char **argv) {
     struct config config = {0};
-    static struct argp argp = {argp_options, parse_opt, args_doc, doc};
+    static struct argp argp = {argp_options, parse_opt, args_doc, doc, 0, 0, 0};
     if (argp_parse(&argp, argc, argv, 0, 0, &config) != 0) {
         return 1;
     }
