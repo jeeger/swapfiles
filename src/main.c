@@ -106,8 +106,8 @@ int main(int argc, char **argv) {
     if (!config.silent) {
         printf("Swapping %s and %s.\n", config.file1, config.file2);
     }
-    int result = renameat2(AT_FDCWD, file1_realpath,
-                           AT_FDCWD, file2_realpath,
+    int result = renameat2(0, file1_realpath,
+                           0, file2_realpath,
                            RENAME_EXCHANGE);
     free(file1_realpath);
     free(file2_realpath);
