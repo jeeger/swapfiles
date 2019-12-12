@@ -45,5 +45,6 @@ int main() {
 AC_MSG_CHECKING(renameat2() syscall is implemented)
 AC_RUN_IFELSE([AC_LANG_SOURCE([$RENAMEAT_IMPLEMENTED])],
         [AC_MSG_RESULT([yes])],
-        [AC_MSG_FAILURE([renameat2() syscall not implemented.])])
+        [AC_MSG_WARN([renameat2() syscall not implemented, result will not work.])],
+        [AC_MSG_WARN([cross-compiling might not work.])])
 AC_OUTPUT
